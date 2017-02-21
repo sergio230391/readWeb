@@ -5,6 +5,7 @@ Client web per www.udl.cat
 @autor: Sergio
 '''
 import urllib2
+from bs4 import BeautifulSoup
 
 class Client(object):
     def get_web(self,page):
@@ -14,11 +15,17 @@ class Client(object):
         f.close()
         return html
 
+    # TODO: Buscar el text
+    def search_text(self,html):
+        soup = BeautifulSoup(html, 'html.parser')
+        elements = soup.find_all("div","featured-links-item") # Buscar un div que tingui aquesta clase
+        return elements
+
     def main(self):
         web = self.get_web('http://www.udl.cat/')
-        # Buscar el text
-        # Imprimir resultats
-        print web
+        resultat = self.search_text(web)
+        # FIXME: Imprimir resultats
+        print resultat
 
 if __name__ == "__main__":
     client = Client()
