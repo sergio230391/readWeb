@@ -18,8 +18,17 @@ class Client(object):
     # TODO: Buscar el text
     def search_text(self,html):
         soup = BeautifulSoup(html, 'html.parser')
-        elements = soup.find_all("div","featured-links-item") # Buscar un div que tingui aquesta clase
-        return elements
+        elements = soup.find_all("div", "featured-links-item") # Buscar un div que tingui aquesta clase
+        resultats = []
+        for element in elements:
+            data = element.find("time")["datetime"]
+            title = element.find("span", "flink-title") # Per agafar el contingut del HTML
+            if title:
+                title = title.text
+            else:
+                title = "Sense titol"
+            resultats.append((data,title))
+        return resultats
 
     def main(self):
         web = self.get_web('http://www.udl.cat/')
